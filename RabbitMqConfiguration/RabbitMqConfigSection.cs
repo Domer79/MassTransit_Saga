@@ -11,6 +11,13 @@ namespace RabbitMqConfiguration
     {
         [ConfigurationProperty("mqhandlers")]
         public MqHandlers MqHandlers => (MqHandlers)base["mqhandlers"];
+
+        [ConfigurationProperty("host", IsRequired = true)]
+        public string Host
+        {
+            get => (string)base["host"];
+            set => base["host"] = value;
+        }
     }
 
     [ConfigurationCollection(typeof(MqHandlerElement))]

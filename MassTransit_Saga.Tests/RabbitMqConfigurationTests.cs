@@ -41,5 +41,14 @@ namespace MassTransit_Saga.Tests
             Assert.AreEqual(typeof(Message1Handler), Type.GetType(element.TypeName));
             Assert.AreEqual("message1_queue", element.Queue);
         }
+
+        [Test]
+        public void ReadHostFromConfigSection_Ok_Test()
+        {
+            var section = Config.GetRabbitMqConfigSection();
+            var host = section.Host;
+
+            Assert.AreEqual("rabbitmq://domer-ss/", host);
+        }
     }
 }
