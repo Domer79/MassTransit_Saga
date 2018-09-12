@@ -81,5 +81,13 @@ namespace MassTransit_Saga.Tests
                 Assert.AreEqual("MassTransit_Saga_Contracts", messageHandlersDictionary[typeof(Message1)].QueueName);
             });
         }
+
+        [TestCase("MassTransit_Saga.Contracts.BookStatus, MassTransit_Saga.Contracts")]
+        public void TypeGetType_IsNotNull(string typeName)
+        {
+            var type = Type.GetType(typeName);
+
+            Assert.IsNotNull(type);
+        }
     }
 }

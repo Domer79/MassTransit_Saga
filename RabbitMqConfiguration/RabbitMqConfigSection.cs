@@ -99,7 +99,11 @@ namespace RabbitMqConfiguration
 
         public Type GetHandlerType()
         {
-            return System.Type.GetType(TypeName);
+            var handlerType = System.Type.GetType(TypeName);
+            if (handlerType == null)
+                throw new ArgumentException(TypeName);
+
+            return handlerType;
         }
     }
 }
