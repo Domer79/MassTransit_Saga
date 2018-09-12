@@ -11,7 +11,7 @@ namespace DataBus
         public static IMessageHandlerConfigurator FromAssembly(this IBusFactoryConfigurator configurator, IHost host, Assembly assembly)
         {
             var handlerTypes = assembly.GetTypes()
-                .Where(t => t.BaseType != null && t.BaseType.IsGenericType && t.BaseType.GetGenericTypeDefinition() == typeof(MassTransit.MessageHandler<>));
+                .Where(t => t.BaseType != null && t.BaseType.IsGenericType && t.BaseType.GetGenericTypeDefinition() == typeof(Interfaces.MessageHandler<>));
 
             return new MessageHandlerConfigurator(handlerTypes.Select(_ =>
             {
@@ -33,7 +33,7 @@ namespace DataBus
             var handlerInfos = config.MqHandlers
                 .OfType<MqHandlerElement>()
                 .Select(_ => new {Type = _.GetHandlerType(), _.Queue})
-                .Where(t => t.Type.BaseType != null && t.Type.BaseType.IsGenericType && t.Type.BaseType.GetGenericTypeDefinition() == typeof(MassTransit.MessageHandler<>))
+                .Where(t => t.Type.BaseType != null && t.Type.BaseType.IsGenericType && t.Type.BaseType.GetGenericTypeDefinition() == typeof(Interfaces.MessageHandler<>))
                 .Select(_ =>
                 {
                     var messageType = _.Type.BaseType.GetGenericArguments()[0];
