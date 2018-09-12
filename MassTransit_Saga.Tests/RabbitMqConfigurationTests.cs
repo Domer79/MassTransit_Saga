@@ -42,13 +42,15 @@ namespace MassTransit_Saga.Tests
             Assert.AreEqual("message1_queue", element.Queue);
         }
 
-        [Test]
-        public void ReadAttributesFromConfigSection_Ok_Test()
+        [TestCase("domer")]
+        [TestCase("domer1")]
+        public void ReadAttributesFromConnectionString_Ok_Test(string connectionName)
         {
             var section = Config.GetRabbitMqConfigSection();
-            var host = section.Host;
-            var userName = section.UserName;
-            var password = section.Password;
+            var connection = section.Connections[connectionName];
+            var host = connection.Host;
+            var userName = connection.UserName;
+            var password = connection.Password;
 
             Assert.AreEqual("rabbitmq://domer-ss/", host);
             Assert.AreEqual("admin", userName);
