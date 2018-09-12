@@ -16,7 +16,7 @@ namespace MassTransit_Saga.Tests
     public class ConsumeBuilderTests
     {
         [Test]
-        public void Build_FromAssembly_Test()
+        public void ZBuild_FromAssembly_Test()
         {
             var assemblyName = new AssemblyName("MassTransit_Saga.CreateNewBook");
             var assembly = Assembly.Load(assemblyName);
@@ -31,7 +31,7 @@ namespace MassTransit_Saga.Tests
         }
 
         [Test]
-        public void Build_FromConfiguration_Test()
+        public void ZBuild_FromConfiguration_Test()
         {
             var bc = Bus.Factory.CreateUsingInMemory(x =>
             {

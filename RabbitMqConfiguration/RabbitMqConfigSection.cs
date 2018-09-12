@@ -18,6 +18,20 @@ namespace RabbitMqConfiguration
             get => (string)base["host"];
             set => base["host"] = value;
         }
+
+        [ConfigurationProperty("user", IsRequired = true)]
+        public string UserName
+        {
+            get => (string) base["user"];
+            set => base["user"] = value;
+        }
+
+        [ConfigurationProperty("password", IsRequired = true)]
+        public string Password
+        {
+            get => (string) base["password"];
+            set => base["password"] = value;
+        }
     }
 
     [ConfigurationCollection(typeof(MqHandlerElement))]

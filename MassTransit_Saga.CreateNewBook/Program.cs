@@ -124,22 +124,7 @@ namespace MassTransit_Saga.CreateNewBook
         CreateBook = 1
     }
 
-    public interface IMessageHandler
-    {
-
-    }
-
-    public interface IMessageHandler<in TMessage> : IMessageHandler
-        where TMessage: class 
-    {
-        Task MessageHandle(TMessage message);
-    }
-
-    public abstract class MessageHandler : IMessageHandler
-    {
-    }
-
-    public abstract class MessageHandler<TMessage> : MessageHandler, IMessageHandler<TMessage>
+    public abstract class MessageHandler<TMessage>
         where TMessage : class
     {
         public abstract Task MessageHandle(TMessage message);

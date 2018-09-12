@@ -43,12 +43,16 @@ namespace MassTransit_Saga.Tests
         }
 
         [Test]
-        public void ReadHostFromConfigSection_Ok_Test()
+        public void ReadAttributesFromConfigSection_Ok_Test()
         {
             var section = Config.GetRabbitMqConfigSection();
             var host = section.Host;
+            var userName = section.UserName;
+            var password = section.Password;
 
             Assert.AreEqual("rabbitmq://domer-ss/", host);
+            Assert.AreEqual("admin", userName);
+            Assert.AreEqual("admin", password);
         }
     }
 }
