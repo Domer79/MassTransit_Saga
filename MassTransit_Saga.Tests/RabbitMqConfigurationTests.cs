@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DataBus.Configuration;
 using MassTransit_Saga.CreateNewBook;
 using NUnit.Framework;
-using RabbitMqConfiguration;
 
 namespace MassTransit_Saga.Tests
 {
