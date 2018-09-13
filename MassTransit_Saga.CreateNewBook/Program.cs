@@ -16,7 +16,7 @@ namespace MassTransit_Saga.CreateNewBook
             builder.RegisterConsumers(Assembly.GetExecutingAssembly());
             builder.Register(context =>
             {
-                var bc = Bus.Factory.CreateUsingRabbitMq(x =>
+                var bc = MassTransit.Bus.Factory.CreateUsingRabbitMq(x =>
                 {
                     var host = x.Host(new Uri("rabbitmq://domer-ss/"), h =>
                     {

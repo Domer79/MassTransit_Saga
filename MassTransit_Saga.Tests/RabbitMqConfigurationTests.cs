@@ -56,5 +56,20 @@ namespace MassTransit_Saga.Tests
             Assert.AreEqual("admin", userName);
             Assert.AreEqual("admin", password);
         }
+
+        [TestCase("message1_queue")]
+        public void ReadAttributesFromQueueElement_Ok_Test(string queueName)
+        {
+            var section = Config.GetRabbitMqConfigSection();
+            var queueElement = section.Queues[queueName];
+
+            var threadCount = queueElement.ThreadCount;
+            var prefetchCountToCore = queueElement.PrefetchCountToCore;
+            var threadsOfCore = queueElement.ThreadsByCoreCount;
+
+            Assert.AreEqual(4, threadCount);
+            Assert.AreEqual(1, prefetchCountToCore);
+            Assert.AreEqual(false, threadsOfCore);
+        }
     }
 }

@@ -17,21 +17,11 @@ namespace DataBus.Configuration
         /// <summary>
         /// Наименование хоста RabbitMq
         /// </summary>
-        [ConfigurationProperty("host", IsRequired = true)]
-        public string Host
+        [ConfigurationProperty("url", IsRequired = true)]
+        public string Url
         {
-            get => (string)base["host"];
-            set => base["host"] = value;
-        }
-
-        /// <summary>
-        /// Номер порта RabbitMq
-        /// </summary>
-        [ConfigurationProperty("port", IsRequired = true, DefaultValue = 5672)]
-        public int Port
-        {
-            get => (int)base["port"];
-            set => base["port"] = value;
+            get => (string)base["url"];
+            set => base["url"] = value;
         }
 
         /// <summary>

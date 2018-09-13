@@ -10,6 +10,7 @@ using MassTransit_Saga.Contracts;
 using MassTransit_Saga.CreateNewBook;
 using NUnit.Framework;
 using Tools;
+using Bus = MassTransit.Bus;
 
 namespace MassTransit_Saga.Tests
 {
