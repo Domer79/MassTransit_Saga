@@ -13,8 +13,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MassTransit_Saga.Tests", "M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tools", "Tools\Tools.csproj", "{60E8DF77-6062-42CA-941B-A11B44CE2536}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitMqConfiguration", "RabbitMqConfiguration\RabbitMqConfiguration.csproj", "{B71DA938-1C88-42AA-8289-661FD4FD64AF}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataBus", "DataBus\DataBus.csproj", "{B1C2693A-4C14-4C5F-B893-8C6476318B8F}"
 EndProject
 Global
@@ -43,10 +41,6 @@ Global
 		{60E8DF77-6062-42CA-941B-A11B44CE2536}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{60E8DF77-6062-42CA-941B-A11B44CE2536}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{60E8DF77-6062-42CA-941B-A11B44CE2536}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B71DA938-1C88-42AA-8289-661FD4FD64AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B71DA938-1C88-42AA-8289-661FD4FD64AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B71DA938-1C88-42AA-8289-661FD4FD64AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B71DA938-1C88-42AA-8289-661FD4FD64AF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B1C2693A-4C14-4C5F-B893-8C6476318B8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B1C2693A-4C14-4C5F-B893-8C6476318B8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1C2693A-4C14-4C5F-B893-8C6476318B8F}.Release|Any CPU.ActiveCfg = Release|Any CPU

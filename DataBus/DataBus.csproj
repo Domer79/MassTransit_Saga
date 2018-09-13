@@ -83,6 +83,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\Config.cs" />
+    <Compile Include="Configuration\MqConnectionElement.cs" />
+    <Compile Include="Configuration\MqConnections.cs" />
+    <Compile Include="Configuration\MqHandlerElement.cs" />
+    <Compile Include="Configuration\MqHandlers.cs" />
+    <Compile Include="Configuration\MqQueueElement.cs" />
+    <Compile Include="Configuration\MqQueues.cs" />
     <Compile Include="Configuration\RabbitMqConfigSection.cs" />
     <Compile Include="ConsumeExtensions.cs" />
     <Compile Include="HandlerInfo.cs" />

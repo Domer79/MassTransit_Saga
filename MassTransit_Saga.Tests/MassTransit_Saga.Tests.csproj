@@ -75,6 +75,7 @@
     <Compile Include="ConsumeBuilderTests.cs" />
     <Compile Include="MapperTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PublishTests.cs" />
     <Compile Include="RabbitMqConfigurationTests.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -93,10 +94,6 @@
     <ProjectReference Include="..\MassTransit_Saga.CreateNewBook\MassTransit_Saga.CreateNewBook.csproj">
       <Project>{E50D4592-4588-440F-BB52-71186AFB50D5}</Project>
       <Name>MassTransit_Saga.CreateNewBook</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\RabbitMqConfiguration\RabbitMqConfiguration.csproj">
-      <Project>{B71DA938-1C88-42AA-8289-661FD4FD64AF}</Project>
-      <Name>RabbitMqConfiguration</Name>
     </ProjectReference>
     <ProjectReference Include="..\Tools\Tools.csproj">
       <Project>{60E8DF77-6062-42CA-941B-A11B44CE2536}</Project>

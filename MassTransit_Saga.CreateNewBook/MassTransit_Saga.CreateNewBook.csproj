@@ -97,10 +97,6 @@
       <Project>{F9C66C95-58F1-486C-984D-2988D7ABC6D2}</Project>
       <Name>MassTransit_Saga.Contracts</Name>
     </ProjectReference>
-    <ProjectReference Include="..\RabbitMqConfiguration\RabbitMqConfiguration.csproj">
-      <Project>{b71da938-1c88-42aa-8289-661fd4fd64af}</Project>
-      <Name>RabbitMqConfiguration</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Tools\Tools.csproj">
       <Project>{60E8DF77-6062-42CA-941B-A11B44CE2536}</Project>
       <Name>Tools</Name>
