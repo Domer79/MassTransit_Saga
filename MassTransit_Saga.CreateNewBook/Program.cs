@@ -1,19 +1,10 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Threading;
 using System.Threading.Tasks;
 using Autofac;
-using Castle.DynamicProxy.Contributors;
 using DataBus;
 using MassTransit;
-using MassTransit.ConsumeConfigurators;
-using MassTransit.RabbitMqTransport;
-using MassTransit.RabbitMqTransport.Configuration;
 using MassTransit_Saga.Contracts;
-using Tools;
 
 namespace MassTransit_Saga.CreateNewBook
 {
