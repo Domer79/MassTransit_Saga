@@ -82,7 +82,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="bus.cs" />
+    <Compile Include="Bus.cs" />
+    <Compile Include="Configuration\BusSettings.cs" />
     <Compile Include="Configuration\Config.cs" />
     <Compile Include="Configuration\MqConnectionElement.cs" />
     <Compile Include="Configuration\MqConnections.cs" />

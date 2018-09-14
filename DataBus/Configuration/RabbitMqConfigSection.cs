@@ -12,5 +12,8 @@ namespace DataBus.Configuration
 
         [ConfigurationProperty("queues")]
         public MqQueues Queues => (MqQueues) base["queues"];
+
+        [ConfigurationProperty("busSettings")]
+        public BusSettings BusSettings => (BusSettings) base["busSettings"];
     }
 }

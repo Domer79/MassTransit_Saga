@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DataBus;
 using DataBus.Configuration;
 using MassTransit_Saga.CreateNewBook;
 using NUnit.Framework;
@@ -48,11 +49,11 @@ namespace MassTransit_Saga.Tests
         {
             var section = Config.GetRabbitMqConfigSection();
             var connection = section.Connections[connectionName];
-            var host = connection.Host;
+            var url = connection.Url;
             var userName = connection.UserName;
             var password = connection.Password;
 
-            Assert.AreEqual("rabbitmq://domer-ss/", host);
+            Assert.AreEqual("rabbitmq://domer-ss/", url);
             Assert.AreEqual("admin", userName);
             Assert.AreEqual("admin", password);
         }
@@ -64,12 +65,21 @@ namespace MassTransit_Saga.Tests
             var queueElement = section.Queues[queueName];
 
             var threadCount = queueElement.ThreadCount;
-            var prefetchCountToCore = queueElement.PrefetchCountToCore;
+            var prefetchCountToCore = queueElement.PrefetchCountToThread;
             var threadsOfCore = queueElement.ThreadsByCoreCount;
 
             Assert.AreEqual(4, threadCount);
             Assert.AreEqual(1, prefetchCountToCore);
             Assert.AreEqual(false, threadsOfCore);
+        }
+
+        [TestCase("workMode")]
+        public void ReadBusSettings_Ok_Test(string key)
+        {
+            var section = Config.GetRabbitMqConfigSection();
+            var workMode = (WorkMode)Enum.Parse(typeof(WorkMode), section.BusSettings[key].Value, true);
+
+            Assert.AreEqual(WorkMode.InMemory, workMode);
         }
     }
 }

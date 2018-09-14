@@ -25,18 +25,21 @@ namespace DataBus.Configuration
         }
 
         /// <summary>
-        /// Количество предварительно выбранных сообщений для одного ядра, которые шина забирает из очереди за один раз перед их обработкой
+        /// Количество предварительно выбранных сообщений для одного потока, которые шина забирает из очереди за один раз перед их обработкой
         /// </summary>
-        [ConfigurationProperty("prefetchCountToCore", DefaultValue = 1)]
-        public int PrefetchCountToCore
+        [ConfigurationProperty("prefetchCountToThread", DefaultValue = 1)]
+        public int PrefetchCountToThread
         {
-            get => (int)base["prefetchCountToCore"];
-            set => base["prefetchCountToCore"] = value;
+            get => (int)base["prefetchCountToThread"];
+            set => base["prefetchCountToThread"] = value;
         }
 
         /// <summary>
         /// Флаг, указывающий, что количество потоков должно равняться количеству ядер процессора системы
         /// </summary>
+        /// <remarks>
+        /// Этот параметр переопределяет параметр <see cref="ThreadCount"/>
+        /// </remarks>
         [ConfigurationProperty("threadsByCoreCount")]
         public bool ThreadsByCoreCount
         {

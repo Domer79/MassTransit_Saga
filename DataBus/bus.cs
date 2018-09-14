@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +15,8 @@ namespace DataBus
         private readonly string _userName;
         private readonly string _password;
         private IBusControl _busControl;
+        private WorkMode _workMode;
+        private readonly RabbitMqConfigSection _section;
 
         public Bus()
             :this(null)
@@ -23,19 +26,54 @@ namespace DataBus
 
         public Bus(string connectionName)
         {
-            var connection = connectionName == null
-                ? Config.GetRabbitMqConfigSection().Connections[0]
-                : Config.GetRabbitMqConfigSection().Connections[connectionName];
+            _section = Config.GetRabbitMqConfigSection();
+            _workMode = GetWorkMode();
 
-            _url = connection.Url;
-            _userName = connection.UserName;
-            _password = connection.Password;
+            try
+            {
+                var connection = connectionName == null
+                    ? _section.Connections[0]
+                    : _section.Connections[connectionName];
+
+                if (string.IsNullOrWhiteSpace(connection.Url))
+                    throw new ArgumentException("connection.Url");
+
+                _url = connection.Url;
+                _userName = connection.UserName;
+                _password = connection.Password;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                _workMode = WorkMode.InMemory;
+            }
+
             Initialize();
+        }
+
+        private WorkMode GetWorkMode()
+        {
+            try
+            {
+                return (WorkMode)Enum.Parse(typeof(WorkMode), _section.BusSettings["workmode"].Value, true);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                return WorkMode.RabbitMq;
+            }
         }
 
         private void Initialize()
         {
-            _busControl = MassTransit.Bus.Factory.CreateUsingRabbitMq(x =>
+            _busControl = _workMode == WorkMode.RabbitMq 
+                ? InitializeUsingRabbit() 
+                : InitializeUsingInMemory();
+        }
+
+        private IBusControl InitializeUsingRabbit()
+        {
+            return MassTransit.Bus.Factory.CreateUsingRabbitMq(x =>
             {
                 var host = x.Host(new Uri(_url), c =>
                 {
@@ -43,7 +81,17 @@ namespace DataBus
                     c.Password(_password);
                 });
 
+                x.FromConfiguration(host)
+                    .Build();
+            });
+        }
 
+        private IBusControl InitializeUsingInMemory()
+        {
+            return MassTransit.Bus.Factory.CreateUsingInMemory(x =>
+            {
+                x.FromConfiguration(x.Host)
+                    .Build();
             });
         }
 
@@ -81,5 +129,11 @@ namespace DataBus
         {
             _busControl.Stop();
         }
+    }
+
+    public enum WorkMode
+    {
+        InMemory,
+        RabbitMq
     }
 }

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using DataBus.Configuration;
 using DataBus.Interfaces;
+using GreenPipes;
 using MassTransit;
 using MassTransit.RabbitMqTransport;
 
@@ -54,6 +56,8 @@ namespace DataBus
 
                         handlerMethod.Invoke(null, new object[] { cfg, delgate, null });
                     }
+
+                    EndpointConfigure(cfg, groupHandler.Key);
                 });
             }
         }
@@ -73,8 +77,28 @@ namespace DataBus
 
                         handlerMethod.Invoke(null, new object[] { cfg, delgate, null });
                     }
+
+                    EndpointConfigure(cfg, groupHandler.Key);
                 });
             }
+        }
+
+        private void EndpointConfigure(IReceiveEndpointConfigurator endpointConfigurator, string queue)
+        {
+            var endpointConfig = Config.GetRabbitMqConfigSection().Queues[queue];
+            if (endpointConfig == null)
+                return;
+
+            var threadCount = endpointConfig.ThreadsByCoreCount
+                ? Environment.ProcessorCount
+                : endpointConfig.ThreadCount;
+
+            var prefetchCount = endpointConfig.PrefetchCountToThread * threadCount;
+
+            if (endpointConfigurator is IRabbitMqReceiveEndpointConfigurator rabbitConfigurator)
+                rabbitConfigurator.PrefetchCount = (ushort)prefetchCount;
+
+            endpointConfigurator.UseConcurrencyLimit(threadCount);
         }
 
         private static MethodInfo GetHandlerMethod(Type handlerType)
