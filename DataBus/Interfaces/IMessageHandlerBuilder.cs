@@ -3,7 +3,7 @@ using MassTransit;
 
 namespace DataBus.Interfaces
 {
-    public interface IMessageHandlerConfigurator
+    public interface IMessageHandlerBuilder
     {
         IBusFactoryConfigurator Configurator { get; }
         IHost Host { get; }

@@ -8,12 +8,12 @@ namespace DataBus
 {
     public static class ConsumeExtensions
     {
-        public static IMessageHandlerConfigurator FromAssembly(this IBusFactoryConfigurator configurator, IHost host, Assembly assembly)
+        public static IMessageHandlerBuilder FromAssembly(this IBusFactoryConfigurator configurator, IHost host, Assembly assembly)
         {
             var handlerTypes = assembly.GetTypes()
                 .Where(t => t.BaseType != null && t.BaseType.IsGenericType && t.BaseType.GetGenericTypeDefinition() == typeof(Interfaces.MessageHandler<>));
 
-            return new MessageHandlerConfigurator(handlerTypes.Select(_ =>
+            return new MessageHandlerBuilder(handlerTypes.Select(_ =>
             {
                 var messageType = _.BaseType.GetGenericArguments()[0];
                 return new HandlerInfo()
@@ -26,7 +26,7 @@ namespace DataBus
             }), configurator, host);
         }
 
-        public static IMessageHandlerConfigurator FromConfiguration(this IBusFactoryConfigurator configurator,
+        public static IMessageHandlerBuilder FromConfiguration(this IBusFactoryConfigurator configurator,
             IHost host)
         {
             var config = Config.GetRabbitMqConfigSection();
@@ -46,12 +46,12 @@ namespace DataBus
                     };
                 });
 
-            return new MessageHandlerConfigurator(handlerInfos, configurator, host);
+            return new MessageHandlerBuilder(handlerInfos, configurator, host);
         }
 
-        public static IMessageHandlerConfigurator SetQueueByNameSpace(this IMessageHandlerConfigurator configurator)
+        public static IMessageHandlerBuilder SetQueueByNameSpace(this IMessageHandlerBuilder builder)
         {
-            var handlers = configurator.GetHandlers().Select(_ => new HandlerInfo()
+            var handlers = builder.GetHandlers().Select(_ => new HandlerInfo()
             {
                 MessageType = _.MessageType,
                 MessageHandlerType = _.MessageHandlerType,
@@ -59,7 +59,7 @@ namespace DataBus
                 QueueName = _.MessageType.Namespace.Replace('.', '_')
             });
 
-            return new MessageHandlerConfigurator(handlers, configurator.Configurator, configurator.Host);
+            return new MessageHandlerBuilder(handlers, builder.Configurator, builder.Host);
         }
     }
 }

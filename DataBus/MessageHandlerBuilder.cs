@@ -11,19 +11,30 @@ using MassTransit.RabbitMqTransport;
 
 namespace DataBus
 {
-    public class MessageHandlerConfigurator: IMessageHandlerConfigurator
+    public class MessageHandlerBuilder: IMessageHandlerBuilder
     {
         private readonly IEnumerable<HandlerInfo> _handlerInfos;
         private readonly IBusFactoryConfigurator _configurator;
         private readonly IHost _host;
         internal Dictionary<Type, HandlerInfo> MessageHandlersDictionary { get; }
 
-        public MessageHandlerConfigurator(IEnumerable<HandlerInfo> handlerInfos, IBusFactoryConfigurator configurator, IHost host)
+        public MessageHandlerBuilder(IEnumerable<HandlerInfo> handlerInfos, IBusFactoryConfigurator configurator, IHost host)
         {
             _handlerInfos = handlerInfos;
             _configurator = configurator;
             _host = host;
             MessageHandlersDictionary = handlerInfos.ToDictionary(_ => _.MessageType);
+
+            if (DatabusExecutionContext.Current == null)
+                throw new InvalidOperationException("Execution context is missing.");
+
+            try
+            {
+                DatabusExecutionContext.Current.SetHandlers(MessageHandlersDictionary);
+            }
+            catch (NotSupportedException)
+            {
+            }
         }
 
         public IBusFactoryConfigurator Configurator => _configurator;
@@ -38,10 +49,10 @@ namespace DataBus
             }
 
             if (_configurator is IBusFactoryConfigurator busFactoryConfigurator)
-                DefaultBuild(busFactoryConfigurator);
+                InMemoryBuild(busFactoryConfigurator);
         }
 
-        private void DefaultBuild(IBusFactoryConfigurator configurator)
+        private void InMemoryBuild(IBusFactoryConfigurator configurator)
         {
             var groupHandlers = _handlerInfos.GroupBy(_ => _.QueueName);
             foreach (var groupHandler in groupHandlers)
@@ -51,8 +62,8 @@ namespace DataBus
                     foreach (var handlerInfo in groupHandler)
                     {
                         var handlerMethod = GetHandlerMethod(handlerInfo.MessageType);
-                        var methodInfo = GetType().GetMethod("Handler").MakeGenericMethod(handlerInfo.MessageType);
-                        var delgate = Delegate.CreateDelegate(typeof(MassTransit.MessageHandler<>).MakeGenericType(handlerInfo.MessageType), this, methodInfo);
+                        var methodInfo = DatabusExecutionContext.Current.GetType().GetMethod("Handler").MakeGenericMethod(handlerInfo.MessageType);
+                        var delgate = Delegate.CreateDelegate(typeof(MassTransit.MessageHandler<>).MakeGenericType(handlerInfo.MessageType), DatabusExecutionContext.Current, methodInfo);
 
                         handlerMethod.Invoke(null, new object[] { cfg, delgate, null });
                     }
@@ -72,8 +83,8 @@ namespace DataBus
                     foreach (var handlerInfo in groupHandler)
                     {
                         var handlerMethod = GetHandlerMethod(handlerInfo.MessageType);
-                        var methodInfo = GetType().GetMethod("Handler").MakeGenericMethod(handlerInfo.MessageType);
-                        var delgate = Delegate.CreateDelegate(typeof(MassTransit.MessageHandler<>).MakeGenericType(handlerInfo.MessageType), this, methodInfo);
+                        var methodInfo = DatabusExecutionContext.Current.GetType().GetMethod("Handler").MakeGenericMethod(handlerInfo.MessageType);
+                        var delgate = Delegate.CreateDelegate(typeof(MassTransit.MessageHandler<>).MakeGenericType(handlerInfo.MessageType), DatabusExecutionContext.Current, methodInfo);
 
                         handlerMethod.Invoke(null, new object[] { cfg, delgate, null });
                     }

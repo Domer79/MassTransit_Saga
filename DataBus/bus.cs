@@ -15,7 +15,7 @@ namespace DataBus
         private readonly string _userName;
         private readonly string _password;
         private IBusControl _busControl;
-        private WorkMode _workMode;
+        private readonly WorkMode _workMode;
         private readonly RabbitMqConfigSection _section;
 
         public Bus()
@@ -47,15 +47,13 @@ namespace DataBus
                 Debug.WriteLine(e);
                 _workMode = WorkMode.InMemory;
             }
-
-            Initialize();
         }
 
         private WorkMode GetWorkMode()
         {
             try
             {
-                return (WorkMode)Enum.Parse(typeof(WorkMode), _section.BusSettings["workmode"].Value, true);
+                return (WorkMode)Enum.Parse(typeof(WorkMode), _section.BusSettings["workMode"].Value, true);
             }
             catch (Exception e)
             {
@@ -105,13 +103,20 @@ namespace DataBus
             return _busControl.Publish<TMessage>(message);
         }
 
+        public Task Publish<TMessage>(object message) where TMessage : class
+        {
+            return _busControl.Publish<TMessage>(message);
+        }
+
         public void Start()
         {
+            Initialize();
             _busControl.Start();
         }
 
         public Task StartAsync()
         {
+            Initialize();
             return _busControl.StartAsync();
         }
 
@@ -129,11 +134,5 @@ namespace DataBus
         {
             _busControl.Stop();
         }
-    }
-
-    public enum WorkMode
-    {
-        InMemory,
-        RabbitMq
     }
 }

@@ -62,7 +62,7 @@ namespace MassTransit_Saga.Tests
             var bc = Bus.Factory.CreateUsingInMemory(x =>
             {
                 var messageHandlerConfigurator = x.FromAssembly(x.Host, assembly);
-                var messageHandlersDictionary = ((MessageHandlerConfigurator)messageHandlerConfigurator).MessageHandlersDictionary;
+                var messageHandlersDictionary = ((MessageHandlerBuilder)messageHandlerConfigurator).MessageHandlersDictionary;
                 messageHandlerConfigurator.Build();
 
                 Assert.AreEqual(typeof(Message1Handler), messageHandlersDictionary[typeof(Message1)].MessageHandlerType);
@@ -77,7 +77,7 @@ namespace MassTransit_Saga.Tests
             var bc = Bus.Factory.CreateUsingInMemory(x =>
             {
                 var messageHandlerConfigurator = x.FromAssembly(x.Host, assembly).SetQueueByNameSpace();
-                var messageHandlersDictionary = ((MessageHandlerConfigurator)messageHandlerConfigurator).MessageHandlersDictionary;
+                var messageHandlersDictionary = ((MessageHandlerBuilder)messageHandlerConfigurator).MessageHandlersDictionary;
                 messageHandlerConfigurator.Build();
 
                 Assert.AreEqual("MassTransit_Saga_Contracts", messageHandlersDictionary[typeof(Message1)].QueueName);
