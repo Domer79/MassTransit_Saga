@@ -104,10 +104,10 @@ namespace DataBus
                 ? Environment.ProcessorCount
                 : endpointConfig.ThreadCount;
 
-            var prefetchCount = endpointConfig.PrefetchCountToThread * threadCount;
+            var prefetchCount = (ushort) (endpointConfig.PrefetchCountToThread * threadCount);
 
             if (endpointConfigurator is IRabbitMqReceiveEndpointConfigurator rabbitConfigurator)
-                rabbitConfigurator.PrefetchCount = (ushort)prefetchCount;
+                rabbitConfigurator.PrefetchCount = prefetchCount;
 
             endpointConfigurator.UseConcurrencyLimit(threadCount);
         }

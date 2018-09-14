@@ -36,7 +36,7 @@ namespace DataBus.Configuration
         {
             var handlerType = System.Type.GetType(TypeName);
             if (handlerType == null)
-                throw new ArgumentException(TypeName);
+                throw new ArgumentException($"Type {TypeName} not found");
 
             return handlerType;
         }

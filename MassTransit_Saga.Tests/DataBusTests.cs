@@ -20,14 +20,16 @@ namespace MassTransit_Saga.Tests
         {
             using (var bus = new Bus())
             {
-                var executionContext = new DataBus.TestExecutionContext(bus);
-                DatabusExecutionContext.SetExecutionContext(executionContext);
-                bus.Start();
-                executionContext.Publish<TestMessage>(new {Message = "Hello Test World!"}).Wait(message =>
+                using (var executionContext = new DataBus.TestExecutionContext(bus))
                 {
-                    Assert.AreEqual("Hello Test World!", message.Message);
-                    return Console.Out.WriteLineAsync(message.Message);
-                });
+                    DatabusExecutionContext.SetExecutionContext(executionContext);
+                    bus.Start();
+                    executionContext.Publish<TestMessage>(new {Message = "Hello Test World!"}).Wait(message =>
+                    {
+                        Assert.AreEqual("Hello Test World!", message.Message);
+                        return Console.Out.WriteLineAsync(message.Message);
+                    });
+                }
             }
         }
 
@@ -36,12 +38,15 @@ namespace MassTransit_Saga.Tests
         {
             using (var bus = new Bus())
             {
-                var executionContext = new DataBus.TestExecutionContext(bus);
-                DatabusExecutionContext.SetExecutionContext(executionContext);
-                bus.Start();
-                for (int i = 0; i < 1000; i++)
+                using (var executionContext = new DataBus.TestExecutionContext(bus))
                 {
-                    executionContext.Publish<TestMessage>(new { Message = "Hello Test World!" }).Wait(message => Console.Out.WriteLineAsync(message.Message));
+                    DatabusExecutionContext.SetExecutionContext(executionContext);
+                    bus.Start();
+                    for (int i = 0; i < 2; i++)
+                    {
+                        executionContext.Publish<TestMessage>(new {Message = "Hello Test World!"})
+                            .Wait(message => Console.Out.WriteLineAsync(message.Message));
+                    }
                 }
             }
         }

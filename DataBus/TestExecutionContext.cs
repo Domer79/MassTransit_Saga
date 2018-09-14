@@ -10,9 +10,11 @@ using MassTransit.Util;
 
 namespace DataBus
 {
-    public class TestExecutionContext: IExecutionContext
+    //todo: Нужно побороть баг синхронизацией потоков выполнения
+    public class TestExecutionContext: IExecutionContext, IDisposable
     {
         private readonly Bus _bus;
+        private AutoResetEvent _syncContextCreationEvent = new AutoResetEvent(false);
         private IDatabusSynchronizationContext _databusSynchronizationContext;
 
         public TestExecutionContext(Bus bus)
@@ -29,11 +31,14 @@ namespace DataBus
         {
             try
             {
+                if (_databusSynchronizationContext == null)
+                    _syncContextCreationEvent.WaitOne();
+
                 await _databusSynchronizationContext.MessageHandle(context.Message);
             }
             finally
             {
-                _databusSynchronizationContext.Dispose();
+                _databusSynchronizationContext?.Dispose();
             }
         }
 
@@ -42,6 +47,7 @@ namespace DataBus
             TaskUtil.Await(_bus.Publish(message));
             var databusSynchronizationContext = new DatabusSynchronizationContext<TMessage>();
             _databusSynchronizationContext = databusSynchronizationContext;
+            _syncContextCreationEvent.Set();
             return databusSynchronizationContext;
         }
 
@@ -50,6 +56,7 @@ namespace DataBus
             TaskUtil.Await(_bus.Publish<TMessage>(message));
             var databusSynchronizationContext = new DatabusSynchronizationContext<TMessage>();
             _databusSynchronizationContext = databusSynchronizationContext;
+            _syncContextCreationEvent.Set();
             return databusSynchronizationContext;
         }
 
@@ -58,7 +65,13 @@ namespace DataBus
             TaskUtil.Await(_bus.Publish(message));
             var databusSynchronizationContext = new DatabusSynchronizationContext<object>();
             _databusSynchronizationContext = databusSynchronizationContext;
+            _syncContextCreationEvent.Set();
             return databusSynchronizationContext;
+        }
+
+        public void Dispose()
+        {
+            _syncContextCreationEvent?.Dispose();
         }
     }
 
