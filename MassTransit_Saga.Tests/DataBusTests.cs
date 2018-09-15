@@ -42,7 +42,7 @@ namespace MassTransit_Saga.Tests
                 {
                     DatabusExecutionContext.SetExecutionContext(executionContext);
                     bus.Start();
-                    for (int i = 0; i < 2; i++)
+                    for (int i = 0; i < 1000; i++)
                     {
                         executionContext.Publish<TestMessage>(new {Message = "Hello Test World!"})
                             .Wait(message => Console.Out.WriteLineAsync(message.Message));
