@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package >
+  <metadata minClientVersion="2.5">
+    <id>garipovd_DataBus</id>
+    <version>1.0.0-alpha</version>
+    <title>DataBus</title>
+    <authors>Damir Garipov</authors>
+    <owners>$author$</owners>
+    <licenseUrl>http://dg-license</licenseUrl>
+    <projectUrl>https://github.com/Domer79/MassTransit_Saga</projectUrl>
+    <iconUrl>http://dg-icons/icon1</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Data bus</description>
+    <releaseNotes>First release the alpha version</releaseNotes>
+    <copyright>Copyright 2018</copyright>
+    <tags>MassTransit, Data, Bus</tags>
+    <dependencies>
+		<dependency id="MassTransit" version="5.1.4"/>
+		<dependency id="Newtonsoft.Json" version="11.0.2"/>
+	</dependencies>
+  </metadata>
+</package>

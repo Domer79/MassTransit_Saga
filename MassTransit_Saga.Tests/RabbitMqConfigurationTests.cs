@@ -68,7 +68,7 @@ namespace MassTransit_Saga.Tests
             var prefetchCountToCore = queueElement.PrefetchCountToThread;
             var threadsOfCore = queueElement.ThreadsByCoreCount;
 
-            Assert.AreEqual(4, threadCount);
+            Assert.AreEqual(8, threadCount);
             Assert.AreEqual(1, prefetchCountToCore);
             Assert.AreEqual(false, threadsOfCore);
         }

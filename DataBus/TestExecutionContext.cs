@@ -13,8 +13,8 @@ namespace DataBus
     public class TestExecutionContext: IExecutionContext, IDisposable
     {
         private readonly Bus _bus;
-        private AutoResetEvent _publishResetEvent = new AutoResetEvent(false);
-        private AutoResetEvent _messageHandleResetEvent = new AutoResetEvent(false);
+        private readonly AutoResetEvent _publishResetEvent = new AutoResetEvent(false);
+        private readonly AutoResetEvent _messageHandleResetEvent = new AutoResetEvent(false);
         private IDatabusSynchronizationContext _databusSynchronizationContext;
 
         public TestExecutionContext(Bus bus)
