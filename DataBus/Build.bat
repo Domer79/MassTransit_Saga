@@ -1,0 +1,1 @@
+c:\windows\system32\windowspowershell\v1.0\powershell.exe -executionpolicy bypass ./Build.ps1
