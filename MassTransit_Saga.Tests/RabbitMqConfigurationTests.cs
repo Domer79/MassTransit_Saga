@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DataBus;
-using DataBus.Configuration;
+using DataBusService;
+using DataBusService.Configuration;
 using MassTransit_Saga.CreateNewBook;
 using NUnit.Framework;
 

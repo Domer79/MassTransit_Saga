@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Configuration;
-using System.Data;
 using Automatonymous;
 using AutoMapper;
 using MassTransit;

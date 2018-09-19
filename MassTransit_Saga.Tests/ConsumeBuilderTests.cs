@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using DataBus;
+using DataBusService;
+using DataBusService.Interfaces;
 using MassTransit;
 using MassTransit_Saga.Contracts;
 using MassTransit_Saga.CreateNewBook;
 using NUnit.Framework;
-using Tools;
-using Bus = MassTransit.Bus;
 
 namespace MassTransit_Saga.Tests
 {
@@ -51,7 +47,7 @@ namespace MassTransit_Saga.Tests
             var type = typeof(Message1Handler);
 
             Assert.IsNotNull(type.BaseType);
-            Assert.AreEqual(type.BaseType.GetGenericTypeDefinition(), typeof(DataBus.Interfaces.MessageHandler<>));
+            Assert.AreEqual(type.BaseType.GetGenericTypeDefinition(), typeof(BaseMessageHandler<>));
         }
 
         [Test]

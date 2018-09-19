@@ -1,33 +1,30 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using DataBus;
-using DataBus.Interfaces;
+using DataBusService;
+using DataBusService.Interfaces;
 
 namespace DatabusTestConsole
 {
     class Program
     {
-        public static int MessageCount = 1000000;
+        public static int MessageCount = 10000;
 
         static void Main(string[] args)
         {
-            Bus bus = null;
+            DataBus bus = null;
             try
             {
-                bus = new Bus("domer");
+                bus = new DataBus("domer");
                 bus.Start();
 
-//                for (int i = 0; i < MessageCount; i++)
-//                {
-//                    bus.Publish<TestMessage>(new {Message = $"Hello World{i}"});
-//                }
+                for (int i = 0; i < MessageCount; i++)
+                {
+                    bus.Publish<TestMessage>(new {Message = $"Hello World{i}"});
+                }
 
-                Thread.Sleep(TimeSpan.FromMinutes(20));
+                Thread.Sleep(TimeSpan.FromSeconds(20));
                 Console.WriteLine($"Количество обработанных сообщений: {TestMessageHandler.Counter}");
                 Console.WriteLine($"Время затрачено: {TestMessageHandler.WorkTime}");
                 Console.ReadLine();
@@ -40,7 +37,7 @@ namespace DatabusTestConsole
         }
     }
 
-    public class TestMessageHandler : MessageHandler<TestMessage>
+    public class TestMessageHandler : BaseMessageHandler<TestMessage>
     {
         public static int Counter;
         private static readonly Stopwatch Stopwatch = new Stopwatch();

@@ -2,7 +2,7 @@
 using System.Reflection;
 using System.Threading.Tasks;
 using Autofac;
-using DataBus;
+using DataBusService;
 using MassTransit;
 using MassTransit_Saga.Contracts;
 
@@ -16,7 +16,7 @@ namespace MassTransit_Saga.CreateNewBook
             builder.RegisterConsumers(Assembly.GetExecutingAssembly());
             builder.Register(context =>
             {
-                var bc = MassTransit.Bus.Factory.CreateUsingRabbitMq(x =>
+                var bc = Bus.Factory.CreateUsingRabbitMq(x =>
                 {
                     var host = x.Host(new Uri("rabbitmq://domer-ss/"), h =>
                     {
@@ -106,7 +106,7 @@ namespace MassTransit_Saga.CreateNewBook
         CreateBook = 1
     }
 
-    public class Message1Handler : DataBus.Interfaces.MessageHandler<Message1>
+    public class Message1Handler : DataBusService.Interfaces.BaseMessageHandler<Message1>
     {
         public override Task MessageHandle(Message1 message)
         {
@@ -114,7 +114,7 @@ namespace MassTransit_Saga.CreateNewBook
         }
     }
 
-    public class Message2Handler : DataBus.Interfaces.MessageHandler<Message2>
+    public class Message2Handler : DataBusService.Interfaces.BaseMessageHandler<Message2>
     {
         public override Task MessageHandle(Message2 message)
         {

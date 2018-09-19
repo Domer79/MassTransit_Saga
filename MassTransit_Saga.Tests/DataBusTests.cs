@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using DataBus;
-using DataBus.Interfaces;
-using MassTransit_Saga.Contracts;
+using DataBusService;
+using DataBusService.Interfaces;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
+using TestExecutionContext = DataBusService.TestExecutionContext;
 
 namespace MassTransit_Saga.Tests
 {
@@ -18,9 +13,9 @@ namespace MassTransit_Saga.Tests
         [Test]
         public void ReceiveMessage_Test()
         {
-            using (var bus = new Bus())
+            using (var bus = new DataBus())
             {
-                using (var executionContext = new DataBus.TestExecutionContext(bus))
+                using (var executionContext = new TestExecutionContext(bus))
                 {
                     DatabusExecutionContext.SetExecutionContext(executionContext);
                     bus.Start();
@@ -36,9 +31,9 @@ namespace MassTransit_Saga.Tests
         [Test]
         public void ReceiveMessage_StressTest()
         {
-            using (var bus = new Bus())
+            using (var bus = new DataBus())
             {
-                using (var executionContext = new DataBus.TestExecutionContext(bus))
+                using (var executionContext = new TestExecutionContext(bus))
                 {
                     DatabusExecutionContext.SetExecutionContext(executionContext);
                     bus.Start();
@@ -58,7 +53,7 @@ namespace MassTransit_Saga.Tests
         string Message { get; set; }
     }
 
-    public class TestMessageHandler: MessageHandler<TestMessage>
+    public class TestMessageHandler: BaseMessageHandler<TestMessage>
     {
         public override Task MessageHandle(TestMessage message)
         {

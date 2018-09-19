@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MassTransit_Saga.Tests", "M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tools", "Tools\Tools.csproj", "{60E8DF77-6062-42CA-941B-A11B44CE2536}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataBus", "DataBus\DataBus.csproj", "{B1C2693A-4C14-4C5F-B893-8C6476318B8F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataBusService", "DataBusService\DataBusService.csproj", "{B1C2693A-4C14-4C5F-B893-8C6476318B8F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabusTestConsole", "DatabusTestConsole\DatabusTestConsole.csproj", "{2D99E706-6DF4-40DC-B1A4-11A6B2390852}"
 EndProject

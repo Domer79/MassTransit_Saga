@@ -50,9 +50,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DataBus\DataBus.csproj">
+    <ProjectReference Include="..\DataBusService\DataBusService.csproj">
       <Project>{b1c2693a-4c14-4c5f-b893-8c6476318b8f}</Project>
-      <Name>DataBus</Name>
+      <Name>DataBusService</Name>
     </ProjectReference>
     <ProjectReference Include="..\MassTransit_Saga.Contracts\MassTransit_Saga.Contracts.csproj">
       <Project>{f9c66c95-58f1-486c-984d-2988d7abc6d2}</Project>
