@@ -1,8 +1,8 @@
 <configuration>
   <configSections>
-    <section name="rabbitmq" type="DataBus.Configuration.RabbitMqConfigSection, DataBus, Version=1.0.0.0, Culture=neutral" />
+    <section name="rabbitmq" type="DataBusService.Configuration.RabbitMqConfigSection, DataBusService, Version=1.0.0.0, Culture=neutral" />
   </configSections>
-  
+
   <rabbitmq>
     <busSettings>
       <add key="workMode" value="InMemory" />

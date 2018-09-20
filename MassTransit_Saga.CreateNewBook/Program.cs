@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Autofac;
 using DataBusService;
+using DataBusService.Interfaces;
 using MassTransit;
 using MassTransit_Saga.Contracts;
 
@@ -106,7 +107,7 @@ namespace MassTransit_Saga.CreateNewBook
         CreateBook = 1
     }
 
-    public class Message1Handler : DataBusService.Interfaces.BaseMessageHandler<Message1>
+    public class Message1Handler : BaseMessageHandler<Message1>
     {
         public override Task MessageHandle(Message1 message)
         {
