@@ -203,4 +203,21 @@ namespace Examples.MessageHandlers
 
 ```
 
+## Публикация сообщений
+
+Для публикации сообщений класс `DataBus` реализует интерфейс `IPublisher`:
+
+```csharp
+
+    public interface IPublisher
+    {
+        Task Publish(object message);
+
+        Task Publish<TMessage>(TMessage message) where TMessage : class;
+
+        Task Publish<TMessage>(object message) where TMessage : class;
+    }
+
+```
+
 Удачи в работе!

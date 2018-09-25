@@ -153,7 +153,7 @@
   <PropertyGroup Condition=" '$(Configuration)'=='Debug_net461' Or '$(Configuration)'=='Release_net461' ">
     <PostBuildEvent>
       c:\windows\system32\windowspowershell\v1.0\powershell.exe -executionpolicy bypass Remove-Item -Path $(ProjectDir)nuget_package\lib\net461 -Force -Recurse
-      xcopy $(TargetDir)*.dll $(ProjectDir)nuget_package\lib\net461\ /H /Y /C
+      xcopy $(TargetDir)DataBusService.dll $(ProjectDir)nuget_package\lib\net461\ /H /Y /C
       c:\windows\system32\windowspowershell\v1.0\powershell.exe -executionpolicy bypass copy -Path $(ProjectDir)MassTransit.DataBusService.nuspec -Destination $(ProjectDir)nuget_package\MassTransit.DataBusService.nuspec
       c:\windows\system32\windowspowershell\v1.0\powershell.exe -executionpolicy bypass copy -Path $(ProjectDir)readme.md -Destination $(ProjectDir)nuget_package\readme.txt
 	</PostBuildEvent>
@@ -161,7 +161,7 @@
   <PropertyGroup Condition=" '$(Configuration)'=='Debug' Or '$(Configuration)'=='Release' ">
     <PostBuildEvent>
       c:\windows\system32\windowspowershell\v1.0\powershell.exe -executionpolicy bypass Remove-Item -Path $(ProjectDir)nuget_package\lib\net471 -Force -Recurse
-      xcopy $(TargetDir)*.dll $(ProjectDir)nuget_package\lib\net471\ /H /Y /C
+      xcopy $(TargetDir)DataBusService.dll $(ProjectDir)nuget_package\lib\net471\ /H /Y /C
       c:\windows\system32\windowspowershell\v1.0\powershell.exe -executionpolicy bypass copy -Path $(ProjectDir)MassTransit.DataBusService.nuspec -Destination $(ProjectDir)nuget_package\MassTransit.DataBusService.nuspec
       c:\windows\system32\windowspowershell\v1.0\powershell.exe -executionpolicy bypass copy -Path $(ProjectDir)readme.md -Destination $(ProjectDir)nuget_package\readme.txt
 	</PostBuildEvent>
