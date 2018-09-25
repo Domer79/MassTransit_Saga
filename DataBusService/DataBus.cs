@@ -16,6 +16,7 @@ using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using DataBusService.Configuration;
+using DataBusService.Interfaces;
 using MassTransit;
 
 namespace DataBusService
@@ -60,50 +61,6 @@ namespace DataBusService
             }
         }
 
-        private WorkMode GetWorkMode()
-        {
-            try
-            {
-                return (WorkMode)Enum.Parse(typeof(WorkMode), _section.BusSettings["workMode"].Value, true);
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e);
-                return WorkMode.RabbitMq;
-            }
-        }
-
-        private void Initialize()
-        {
-            _busControl = _workMode == WorkMode.RabbitMq 
-                ? InitializeUsingRabbit() 
-                : InitializeUsingInMemory();
-        }
-
-        private IBusControl InitializeUsingRabbit()
-        {
-            return Bus.Factory.CreateUsingRabbitMq(x =>
-            {
-                var host = x.Host(new Uri(_url), c =>
-                {
-                    c.Username(_userName);
-                    c.Password(_password);
-                });
-
-                x.FromConfiguration(host)
-                    .Build();
-            });
-        }
-
-        private IBusControl InitializeUsingInMemory()
-        {
-            return Bus.Factory.CreateUsingInMemory(x =>
-            {
-                x.FromConfiguration(x.Host)
-                    .Build();
-            });
-        }
-
         public Task Publish(object message)
         {
             return _busControl.Publish(message);
@@ -144,6 +101,50 @@ namespace DataBusService
         public void Dispose()
         {
             _busControl.Stop();
+        }
+
+        private WorkMode GetWorkMode()
+        {
+            try
+            {
+                return (WorkMode)Enum.Parse(typeof(WorkMode), _section.BusSettings["workMode"].Value, true);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                return WorkMode.RabbitMq;
+            }
+        }
+
+        private void Initialize()
+        {
+            _busControl = _workMode == WorkMode.RabbitMq
+                ? InitializeUsingRabbit()
+                : InitializeUsingInMemory();
+        }
+
+        private IBusControl InitializeUsingRabbit()
+        {
+            return Bus.Factory.CreateUsingRabbitMq(x =>
+            {
+                var host = x.Host(new Uri(_url), c =>
+                {
+                    c.Username(_userName);
+                    c.Password(_password);
+                });
+
+                x.FromConfiguration(host)
+                    .Build();
+            });
+        }
+
+        private IBusControl InitializeUsingInMemory()
+        {
+            return Bus.Factory.CreateUsingInMemory(x =>
+            {
+                x.FromConfiguration(x.Host)
+                    .Build();
+            });
         }
     }
 }

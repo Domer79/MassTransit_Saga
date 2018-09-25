@@ -2,18 +2,21 @@
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
+using Autofac;
 using DataBusService;
 using DataBusService.Interfaces;
+using Ninject;
 
 namespace DatabusTestConsole
 {
     class Program
     {
-        public static int MessageCount = 10000;
+        public static int MessageCount = 100;
 
         static void Main(string[] args)
         {
             DataBus bus = null;
+            DependencyResolver.SetDependencyResolver(new NinjectBusDependencyResolver());
             try
             {
                 bus = new DataBus("domer");
@@ -34,6 +37,65 @@ namespace DatabusTestConsole
             {
                 bus?.Stop();
             }
+        }
+    }
+
+    public class AutofacBusDependencyResolver: IBusDependencyResolver
+    {
+        private readonly IContainer _container;
+
+        public AutofacBusDependencyResolver()
+        {
+            _container = IocConfigure();
+        }
+
+        public TService Resolve<TService>()
+        {
+            return _container.Resolve<TService>();
+        }
+
+        public object Resolve(Type serviceType)
+        {
+            return _container.Resolve(serviceType);
+        }
+
+        private static IContainer IocConfigure()
+        {
+            var builder = new ContainerBuilder();
+            builder.RegisterType<Interface1Implement>().As<IInterface1>();
+            builder.RegisterType<Interface2Implement>().As<IInterface2>();
+
+            return builder.Build();
+        }
+    }
+
+    public class NinjectBusDependencyResolver: IBusDependencyResolver
+    {
+        private readonly IKernel _kernel;
+
+        public NinjectBusDependencyResolver()
+        {
+            _kernel = IocConfigure();
+        }
+
+        public TService Resolve<TService>()
+        {
+            return _kernel.Get<TService>();
+        }
+
+        public object Resolve(Type serviceType)
+        {
+            return _kernel.Get(serviceType);
+        }
+
+        private static IKernel IocConfigure()
+        {
+            var kernel = new StandardKernel();
+
+            kernel.Bind<IInterface1>().To<Interface1Implement>().InThreadScope();
+            kernel.Bind<IInterface2>().To<Interface2Implement>().InThreadScope();
+
+            return kernel;
         }
     }
 
@@ -64,5 +126,54 @@ namespace DatabusTestConsole
     public class TestMessage
     {
         public string Message { get; set; }
+    }
+
+    public class Test2MessageHandler : BaseMessageHandler<TestMessage>
+    {
+        private readonly IInterface1 _implement1;
+        private readonly IInterface2 _implement2;
+
+        public Test2MessageHandler(IInterface1 implement1, IInterface2 implement2)
+        {
+            _implement1 = implement1;
+            _implement2 = implement2;
+        }
+
+        public override async Task MessageHandle(TestMessage message)
+        {
+            await Console.Out.WriteLineAsync(message.Message);
+            await Console.Out.WriteLineAsync(_implement1.InstanceName);
+            await Console.Out.WriteLineAsync(_implement2.InstanceName);
+        }
+    }
+
+    public interface IInterface1
+    {
+        string InstanceName { get; }
+    }
+
+    public interface IInterface2
+    {
+        string InstanceName { get; }
+    }
+
+    public class Interface1Implement : IInterface1
+    {
+        public Interface1Implement()
+        {
+            Console.WriteLine("Interface1Implement Created");
+        }
+
+        public string InstanceName => "Instance1";
+    }
+
+    public class Interface2Implement : IInterface2
+    {
+        public Interface2Implement()
+        {
+            Console.WriteLine("Interface2Implement Created");
+        }
+
+        public string InstanceName => "Instance2";
     }
 }

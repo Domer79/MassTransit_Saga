@@ -12,22 +12,24 @@
 //See the License for the specific language governing permissions and
 //limitations under the License.
 
-using DataBusService.Interfaces;
+using System;
 
-namespace DataBusService
+namespace DataBusService.Interfaces
 {
-    public class DatabusExecutionContext
+    public interface IBusDependencyResolver
     {
-        static DatabusExecutionContext()
-        {
-            Current = new RabbitExecutionContext();
-        }
+        /// <summary>
+        /// Resolve by generic arguments
+        /// </summary>
+        /// <typeparam name="TService"></typeparam>
+        /// <returns></returns>
+        TService Resolve<TService>();
 
-        public static void SetExecutionContext(IExecutionContext executionContext)
-        {
-            Current = executionContext;
-        }
-
-        public static IExecutionContext Current { get; private set; }
+        /// <summary>
+        /// Resolve by serviceType
+        /// </summary>
+        /// <param name="serviceType"></param>
+        /// <returns></returns>
+        object Resolve(Type serviceType);
     }
 }

@@ -2,7 +2,7 @@
 <package >
   <metadata minClientVersion="2.5">
     <id>MassTransit.DataBusService</id>
-    <version>1.0.11-alpha</version>
+    <version>1.0.12-alpha</version>
     <title>DataBusService</title>
     <authors>Damir Garipov</authors>
     <owners>$author$</owners>

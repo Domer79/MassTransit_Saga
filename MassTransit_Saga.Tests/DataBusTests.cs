@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Threading.Tasks;
 using DataBusService;
-using DataBusService.Interfaces;
+using MassTransit_Saga.Tests.Contracts;
 using NUnit.Framework;
 using TestExecutionContext = DataBusService.TestExecutionContext;
 
@@ -46,18 +45,5 @@ namespace MassTransit_Saga.Tests
             }
         }
 
-    }
-
-    public interface TestMessage
-    {
-        string Message { get; set; }
-    }
-
-    public class TestMessageHandler: BaseMessageHandler<TestMessage>
-    {
-        public override Task MessageHandle(TestMessage message)
-        {
-            return Console.Out.WriteLineAsync(message.Message);
-        }
     }
 }

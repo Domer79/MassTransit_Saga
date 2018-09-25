@@ -12,22 +12,19 @@
 //See the License for the specific language governing permissions and
 //limitations under the License.
 
+using System;
+using System.Diagnostics;
 using DataBusService.Interfaces;
 
 namespace DataBusService
 {
-    public class DatabusExecutionContext
+    public class DependencyResolver
     {
-        static DatabusExecutionContext()
+        public static void SetDependencyResolver(IBusDependencyResolver resolver)
         {
-            Current = new RabbitExecutionContext();
+            Current = resolver;
         }
 
-        public static void SetExecutionContext(IExecutionContext executionContext)
-        {
-            Current = executionContext;
-        }
-
-        public static IExecutionContext Current { get; private set; }
+        internal static IBusDependencyResolver Current { get; private set; }
     }
 }

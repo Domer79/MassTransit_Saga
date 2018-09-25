@@ -84,46 +84,4 @@ namespace DataBusService
             _messageHandleResetEvent.Dispose();
         }
     }
-
-    public interface IDatabusSynchronizationContext: IDisposable
-    {
-        Task MessageHandle(object message);
-        void Wait(Func<object, Task> messageHandler);
-    }
-
-    public class DatabusSynchronizationContext<TMessage> : IDatabusSynchronizationContext where TMessage : class
-    {
-        private readonly AutoResetEvent _publishResetEvent;
-        private readonly AutoResetEvent _messageHandleResetEvent;
-        private Func<TMessage, Task> _messageHandler;
-
-        public DatabusSynchronizationContext(AutoResetEvent publishResetEvent, AutoResetEvent messageHandleResetEvent)
-        {
-            _publishResetEvent = publishResetEvent;
-            _messageHandleResetEvent = messageHandleResetEvent;
-        }
-
-        public Task MessageHandle(object message)
-        {
-            return _messageHandler((TMessage) message);
-        }
-
-        public void Wait(Func<TMessage, Task> messageHandler)
-        {
-            _messageHandler = messageHandler;
-            _messageHandleResetEvent.Set();
-            _publishResetEvent.WaitOne();
-            Console.WriteLine("Message handled");
-        }
-
-        public void Wait(Func<object, Task> messageHandler)
-        {
-            Wait((Func<TMessage, Task>)messageHandler);
-        }
-
-        public void Dispose()
-        {
-            
-        }
-    }
 }

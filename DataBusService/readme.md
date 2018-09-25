@@ -130,4 +130,77 @@ namespace Examples.MessageHandlers
 
 Здесь для дополнительной настройки очереди нужно создать запись с именем `message1_queue` в секции `queues`.
 
+## Поддержка IOC
+
+Для поддержки зависимостей в обработчиках сообщений необходимо реализовать интерфейс `IBusDependencyResolver`, после этого настроить с помощью статичесокго класса `DependencyResolver`, например:
+
+```csharp
+
+    public interface IBusDependencyResolver
+    {
+        /// <summary>
+        /// Resolve by generic arguments
+        /// </summary>
+        /// <typeparam name="TService"></typeparam>
+        /// <returns></returns>
+        TService Resolve<TService>();
+
+        /// <summary>
+        /// Resolve by serviceType
+        /// </summary>
+        /// <param name="serviceType"></param>
+        /// <returns></returns>
+        object Resolve(Type serviceType);
+    }
+
+    public class AutofacBusDependencyResolver: IBusDependencyResolver
+    {
+        private readonly IContainer _container;
+
+        public AutofacBusDependencyResolver()
+        {
+            _container = IocConfigure();
+        }
+
+        public TService Resolve<TService>()
+        {
+            return _container.Resolve<TService>();
+        }
+
+        public object Resolve(Type serviceType)
+        {
+            return _container.Resolve(serviceType);
+        }
+
+        private static IContainer IocConfigure()
+        {
+            var builder = new ContainerBuilder();
+            builder.RegisterType<Interface1Implement>().As<IInterface1>();
+            builder.RegisterType<Interface2Implement>().As<IInterface2>();
+
+            return builder.Build();
+        }
+    }
+
+    ...
+
+    static void Main(string[] args)
+    {
+        DataBus bus = null;
+        DependencyResolver.SetDependencyResolver(new AutofacBusDependencyResolver());
+        try
+        {
+            bus = new DataBus("domer");
+            bus.Start();
+
+            ...
+        }
+        finally
+        {
+            bus?.Stop();
+        }
+    }
+
+```
+
 Удачи в работе!
