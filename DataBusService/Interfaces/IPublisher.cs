@@ -12,14 +12,16 @@
 //See the License for the specific language governing permissions and
 //limitations under the License.
 
-using System;
 using System.Threading.Tasks;
 
-namespace DataBusService
+namespace DataBusService.Interfaces
 {
-    public interface IDatabusSynchronizationContext: IDisposable
+    public interface IPublisher
     {
-        Task MessageHandle(object message);
-        void Wait(Func<object, Task> messageHandler);
+        Task Publish(object message);
+
+        Task Publish<TMessage>(TMessage message) where TMessage : class;
+
+        Task Publish<TMessage>(object message) where TMessage : class;
     }
 }

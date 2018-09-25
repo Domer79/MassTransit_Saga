@@ -21,7 +21,7 @@ using MassTransit;
 
 namespace DataBusService
 {
-    public class DataBus: IDisposable
+    public class DataBus: IDisposable, IPublisher
     {
         private readonly string _url;
         private readonly string _userName;
