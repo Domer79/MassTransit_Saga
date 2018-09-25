@@ -105,8 +105,7 @@ namespace DataBusService
 
         public Task MessageHandle(object message)
         {
-            TaskUtil.Await(_messageHandler((TMessage) message));
-            return Task.CompletedTask;
+            return _messageHandler((TMessage) message);
         }
 
         public void Wait(Func<TMessage, Task> messageHandler)

@@ -2,13 +2,13 @@
 <package >
   <metadata minClientVersion="2.5">
     <id>MassTransit.DataBusService</id>
-    <version>1.0.10-alpha</version>
+    <version>1.0.11-alpha</version>
     <title>DataBusService</title>
     <authors>Damir Garipov</authors>
     <owners>$author$</owners>
-    <licenseUrl>http://dg-license</licenseUrl>
-    <projectUrl>https://github.com/Domer79/MassTransit_Saga</projectUrl>
-    <iconUrl>http://dg-icons/icon1</iconUrl>
+    <licenseUrl>https://github.com/Domer79/MassTransit_Saga/blob/master/DataBusService/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/Domer79/MassTransit_Saga/tree/master/DataBusService</projectUrl>
+    <iconUrl>http://github.com/domer79/noicon</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Data bus service</description>
     <releaseNotes>First release the alpha version</releaseNotes>
