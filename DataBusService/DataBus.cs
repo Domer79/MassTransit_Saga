@@ -17,6 +17,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using DataBusService.Configuration;
 using DataBusService.Interfaces;
+using GreenPipes;
 using MassTransit;
 
 namespace DataBusService
@@ -29,6 +30,8 @@ namespace DataBusService
         private IBusControl _busControl;
         private readonly WorkMode _workMode;
         private readonly RabbitMqConfigSection _section;
+        private ConnectHandle _receiveHandle;
+        private ConnectHandle _consumeHandle;
 
         public DataBus()
             :this(null)
@@ -100,6 +103,10 @@ namespace DataBusService
 
         public void Dispose()
         {
+            _receiveHandle.Disconnect();
+            _receiveHandle.Dispose();
+            _consumeHandle.Disconnect();
+            _consumeHandle.Dispose();
             _busControl.Stop();
         }
 
@@ -121,6 +128,11 @@ namespace DataBusService
             _busControl = _workMode == WorkMode.RabbitMq
                 ? InitializeUsingRabbit()
                 : InitializeUsingInMemory();
+
+            var receiveObserver = new ReceiveObserver();
+            var consumeObserver = new ConsumeObserver();
+            _receiveHandle = _busControl.ConnectReceiveObserver(receiveObserver);
+            _consumeHandle = _busControl.ConnectConsumeObserver(consumeObserver);
         }
 
         private IBusControl InitializeUsingRabbit()

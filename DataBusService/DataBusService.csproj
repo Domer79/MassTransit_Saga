@@ -115,6 +115,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConsumeObserver.cs" />
     <Compile Include="DataBus.cs" />
     <Compile Include="Configuration\BusSettings.cs" />
     <Compile Include="Configuration\Config.cs" />
@@ -140,6 +141,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueueGenerationType.cs" />
     <Compile Include="RabbitExecutionContext.cs" />
+    <Compile Include="ReceiveObserver.cs" />
     <Compile Include="TestExecutionContext.cs" />
     <Compile Include="WorkMode.cs" />
   </ItemGroup>

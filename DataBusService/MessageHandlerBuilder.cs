@@ -80,6 +80,7 @@ namespace DataBusService
                         var delgate = Delegate.CreateDelegate(typeof(MessageHandler<>).MakeGenericType(handlerInfo.MessageType), DatabusExecutionContext.Current, methodInfo);
 
                         handlerMethod.Invoke(null, new object[] { cfg, delgate, null });
+                        Console.WriteLine($"MessageHandler {handlerInfo.MessageHandlerType.Name} for message {handlerInfo.MessageType.Name} in queue {handlerInfo.QueueName} registered");
                     }
 
                     EndpointConfigure(cfg, groupHandler.Key);
@@ -101,6 +102,7 @@ namespace DataBusService
                         var delgate = Delegate.CreateDelegate(typeof(MessageHandler<>).MakeGenericType(handlerInfo.MessageType), DatabusExecutionContext.Current, methodInfo);
 
                         handlerMethod.Invoke(null, new object[] { cfg, delgate, null });
+                        Console.WriteLine($"MessageHandler {handlerInfo.MessageHandlerType.Name} for message {handlerInfo.MessageType.Name} in queue {handlerInfo.QueueName} registered");
                     }
 
                     EndpointConfigure(cfg, groupHandler.Key);

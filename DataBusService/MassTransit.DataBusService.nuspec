@@ -2,7 +2,7 @@
 <package >
   <metadata minClientVersion="2.5">
     <id>MassTransit.DataBusService</id>
-    <version>1.0.13-alpha</version>
+    <version>1.0.17-alpha</version>
     <title>DataBusService</title>
     <authors>Damir Garipov</authors>
     <owners>$author$</owners>
@@ -15,9 +15,11 @@
     <copyright>Copyright 2018</copyright>
     <tags>MassTransit, Data, Bus</tags>
     <dependencies>
-		<dependency id="MassTransit" version="5.1.4"/>
-		<dependency id="Newtonsoft.Json" version="11.0.2"/>
-	</dependencies>
+      <dependency id="MassTransit" version="5.1.4"/>
+      <dependency id="MassTransit.RabbitMQ" version="5.1.4"/>
+      <dependency id="RabbitMQ.Client" version="5.0.1"/>
+      <dependency id="Newtonsoft.Json" version="11.0.2"/>
+    </dependencies>
   </metadata>
   <files>
     <file src="lib\net461\**" target="lib/net461" />
