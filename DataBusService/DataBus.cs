@@ -19,6 +19,7 @@ using DataBusService.Configuration;
 using DataBusService.Interfaces;
 using GreenPipes;
 using MassTransit;
+using MassTransit.NLogIntegration;
 
 namespace DataBusService
 {
@@ -147,6 +148,8 @@ namespace DataBusService
 
                 x.FromConfiguration(host)
                     .Build();
+
+                x.UseNLog();
             });
         }
 

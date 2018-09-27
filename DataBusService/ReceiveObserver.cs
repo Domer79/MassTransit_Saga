@@ -39,12 +39,16 @@ namespace DataBusService
             where T : class
         {
             // called when the message was consumed, once for each consumer
-            return Console.Out.WriteLineAsync($"Message {typeof(T).Name} handled. Ellapsed {duration}. ConsumerType: {consumerType}");
+            var formatMessage = $"Message {typeof(T).Name}, Id={context.MessageId} handled. Duration {duration}. ConsumerType: {consumerType}";
+            Log.Debug(formatMessage);
+            return Console.Out.WriteLineAsync(formatMessage);
         }
 
         public Task ConsumeFault<T>(ConsumeContext<T> context, TimeSpan elapsed, string consumerType, Exception exception) where T : class
         {
             // called when the message is consumed but the consumer throws an exception
+            Log.Error($"Error by handle message {typeof(T)}, Id={context.MessageId}, Elapsed: {elapsed}, ConsumerType: {consumerType}", exception);
+            Log.Error(exception);
             return Task.CompletedTask;
         }
 

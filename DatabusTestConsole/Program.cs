@@ -11,7 +11,7 @@ namespace DatabusTestConsole
 {
     class Program
     {
-        public static int MessageCount = 1;
+        public static int MessageCount = 100;
 
         static void Main(string[] args)
         {

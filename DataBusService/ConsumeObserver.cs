@@ -23,7 +23,9 @@ namespace DataBusService
         Task IConsumeObserver.PreConsume<T>(ConsumeContext<T> context)
         {
             // called before the consumer's Consume method is called
-            return Console.Out.WriteLineAsync($"Received message {typeof(T)} from {context.SourceAddress}");
+            var formatMessage = $"Received message {typeof(T)}, Id={context.MessageId} from {context.SourceAddress}";
+            Log.Debug(formatMessage);
+            return Console.Out.WriteLineAsync(formatMessage);
         }
 
         Task IConsumeObserver.PostConsume<T>(ConsumeContext<T> context)
@@ -36,7 +38,6 @@ namespace DataBusService
         Task IConsumeObserver.ConsumeFault<T>(ConsumeContext<T> context, Exception exception)
         {
             // called if the consumer's Consume method throws an exception
-//            await Console.Out.WriteLineAsync($"Error by handle message {typeof(T)}. Exception: {exception}");
             return Task.CompletedTask;
         }
     }

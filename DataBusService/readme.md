@@ -220,4 +220,28 @@ namespace Examples.MessageHandlers
 
 ```
 
+## Логирование
+
+В DataBusService реализовано логирование событий получения, обработки и возникающих ошибок при обработке сообщений.  
+Пример конфигурационного файла для NLog:
+
+```xml
+
+  <targets>
+    <target xsi:type="File" name="f" fileName="${basedir}/logs/${shortdate}.log" layout="${longdate}|${uppercase:${level}}|${message}" />
+    <target xsi:type="File" name="dbs" fileName="${basedir}/logs/dbs_messhandlers_${shortdate}.log" />
+    <target xsi:type="File" name="dbs_error" fileName="${basedir}/logs/dbs_error_${shortdate}.log" layout="${longdate} ${exception:format=toString,stacktrace:innerFormat=toString,stacktrace:maxInnerExceptionLevel=10}" />
+  </targets>
+
+  <rules>
+    <logger name="*" minlevel="Trace" writeTo="f" /> 
+    <logger name="DataBusService" minlevel="Trace" maxlevel="Warn" writeTo="dbs" />
+    <logger name="DataBusService" minlevel="Error" writeTo="dbs_error" />
+   
+  </rules>
+
+```
+
+В приведенном примере первое целевое назначение предназначено для записи всех событий, во второе назначение пишутся логи событий получения/обработки сообщений, в третьем ошибки возникшие при обработки сообщений
+
 Удачи в работе!
