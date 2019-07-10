@@ -5,13 +5,15 @@ using System.Threading.Tasks;
 using Autofac;
 using DataBusService;
 using DataBusService.Interfaces;
+using MassTransit;
+using MassTransit.Context;
 using Ninject;
 
 namespace DatabusTestConsole
 {
     class Program
     {
-        public static int MessageCount = 100;
+        public static int MessageCount = 10;
 
         static void Main(string[] args)
         {
@@ -19,15 +21,18 @@ namespace DatabusTestConsole
             DependencyResolver.SetDependencyResolver(new NinjectBusDependencyResolver());
             try
             {
+                EndpointConvention.Map<ITestSendMessage>(new Uri("rabbitmq://localhost/test_send_message"));
+                EndpointConvention.Map<TestMessage>(new Uri("rabbitmq://localhost/testmessage_queue"));
+                MessageCorrelation.UseCorrelationId<TestMessage>(x => x.CorrelationId);
                 bus = new DataBus("domer");
                 bus.Start();
 
                 for (int i = 0; i < MessageCount; i++)
                 {
-                    bus.Publish<TestMessage>(new {Message = $"Hello World{i}"});
+                    bus.Send<TestMessage>(new TestMessage(){Message = $"Hello World{i}"}).Wait();
                 }
 
-                Thread.Sleep(TimeSpan.FromSeconds(20));
+                //Thread.Sleep(TimeSpan.FromSeconds(20));
                 Console.WriteLine($"Количество обработанных сообщений: {TestMessageHandler.Counter}");
                 Console.WriteLine($"Время затрачено: {TestMessageHandler.WorkTime}");
                 Console.ReadLine();
@@ -59,6 +64,17 @@ namespace DatabusTestConsole
             return _container.Resolve(serviceType);
         }
 
+        /// <summary>
+        /// Resolve handler
+        /// </summary>
+        /// <typeparam name="TMessage"></typeparam>
+        /// <param name="messageHandlerType"></param>
+        /// <returns></returns>
+        public BaseMessageHandler<TMessage> ResolveHandler<TMessage>(Type messageHandlerType) where TMessage : class
+        {
+            return (BaseMessageHandler<TMessage>) _container.Resolve(messageHandlerType);
+        }
+
         private static IContainer IocConfigure()
         {
             var builder = new ContainerBuilder();
@@ -88,6 +104,17 @@ namespace DatabusTestConsole
             return _kernel.Get(serviceType);
         }
 
+        /// <summary>
+        /// Resolve handler
+        /// </summary>
+        /// <typeparam name="TMessage"></typeparam>
+        /// <param name="messageHandlerType"></param>
+        /// <returns></returns>
+        public BaseMessageHandler<TMessage> ResolveHandler<TMessage>(Type messageHandlerType) where TMessage : class
+        {
+            return (BaseMessageHandler<TMessage>) _kernel.Get(messageHandlerType);
+        }
+
         private static IKernel IocConfigure()
         {
             var kernel = new StandardKernel();
@@ -104,7 +131,7 @@ namespace DatabusTestConsole
         public static int Counter;
         private static readonly Stopwatch Stopwatch = new Stopwatch();
 
-        public override Task MessageHandle(TestMessage message)
+        public override Task MessageHandle(TestMessage message, ConsumeContext<TestMessage> context)
         {
             Counter++;
 
@@ -126,6 +153,7 @@ namespace DatabusTestConsole
     public class TestMessage
     {
         public string Message { get; set; }
+        public Guid CorrelationId { get; set; }
     }
 
     public class Test2MessageHandler : BaseMessageHandler<TestMessage>
@@ -139,7 +167,7 @@ namespace DatabusTestConsole
             _implement2 = implement2;
         }
 
-        public override async Task MessageHandle(TestMessage message)
+        public override async Task MessageHandle(TestMessage message, ConsumeContext<TestMessage> context)
         {
             await Console.Out.WriteLineAsync(message.Message);
             await Console.Out.WriteLineAsync(_implement1.InstanceName);

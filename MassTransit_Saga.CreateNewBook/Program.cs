@@ -109,7 +109,7 @@ namespace MassTransit_Saga.CreateNewBook
 
     public class Message1Handler : BaseMessageHandler<Message1>
     {
-        public override Task MessageHandle(Message1 message)
+        public override Task MessageHandle(Message1 message, ConsumeContext<Message1> context)
         {
             return Console.Out.WriteLineAsync(message.Message);
         }
@@ -117,7 +117,7 @@ namespace MassTransit_Saga.CreateNewBook
 
     public class Message2Handler : DataBusService.Interfaces.BaseMessageHandler<Message2>
     {
-        public override Task MessageHandle(Message2 message)
+        public override Task MessageHandle(Message2 message, ConsumeContext<Message2> context)
         {
             return Console.Out.WriteLineAsync(message.Message);
         }

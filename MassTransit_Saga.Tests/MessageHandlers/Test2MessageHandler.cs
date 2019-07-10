@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DataBusService.Interfaces;
+using MassTransit;
 using MassTransit_Saga.Tests.Contracts;
 
 namespace MassTransit_Saga.Tests.MessageHandlers
@@ -19,7 +20,7 @@ namespace MassTransit_Saga.Tests.MessageHandlers
             _implement2 = implement2;
         }
 
-        public override async Task MessageHandle(TestMessage message)
+        public override async Task MessageHandle(TestMessage message, ConsumeContext<TestMessage> context)
         {
             await Console.Out.WriteLineAsync(message.Message);
 

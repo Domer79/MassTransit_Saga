@@ -31,5 +31,13 @@ namespace DataBusService.Interfaces
         /// <param name="serviceType"></param>
         /// <returns></returns>
         object Resolve(Type serviceType);
+
+        /// <summary>
+        /// Resolve handler
+        /// </summary>
+        /// <typeparam name="TMessage"></typeparam>
+        /// <param name="messageHandlerType"></param>
+        /// <returns></returns>
+        BaseMessageHandler<TMessage> ResolveHandler<TMessage>(Type messageHandlerType) where TMessage : class;
     }
 }

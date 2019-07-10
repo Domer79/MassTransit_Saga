@@ -134,12 +134,6 @@ namespace DataBusService
             return methodInfo.MakeGenericMethod(handlerType);
         }
 
-        public Task Handler<TMessage>(ConsumeContext<TMessage> context) where TMessage : class
-        {
-            var messageHandler = (BaseMessageHandler<TMessage>)Activator.CreateInstance(MessageHandlersDictionary[typeof(TMessage)].MessageHandlerType);
-            return messageHandler.MessageHandle(context.Message);
-        }
-
         public IEnumerable<HandlerInfo> GetHandlers()
         {
             return _handlerInfos;

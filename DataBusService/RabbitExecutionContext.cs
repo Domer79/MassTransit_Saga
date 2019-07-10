@@ -38,8 +38,7 @@ namespace DataBusService
             BaseMessageHandler<TMessage> messageHandler = null;
             if (DependencyResolver.Current != null)
             {
-                var ctorParameters = constructorInfo.GetParameters().Select(p => DependencyResolver.Current.Resolve(p.ParameterType)).ToArray();
-                messageHandler = (BaseMessageHandler<TMessage>)constructorInfo.Invoke(ctorParameters);
+                messageHandler = DependencyResolver.Current.ResolveHandler<TMessage>(messageHandlerType);
             }
             else
             {
@@ -47,7 +46,7 @@ namespace DataBusService
             }
 
             Console.WriteLine($"Task created for handle message {typeof(TMessage)}.");
-            return messageHandler.MessageHandle(context.Message);
+            return messageHandler.MessageHandle(context.Message, context);
         }
     }
 }

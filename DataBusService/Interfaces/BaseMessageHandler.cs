@@ -13,12 +13,13 @@
 //limitations under the License.
 
 using System.Threading.Tasks;
+using MassTransit;
 
 namespace DataBusService.Interfaces
 {
     public abstract class BaseMessageHandler<TMessage>
         where TMessage : class
     {
-        public abstract Task MessageHandle(TMessage message);
+        public abstract Task MessageHandle(TMessage message, ConsumeContext<TMessage> context);
     }
 }

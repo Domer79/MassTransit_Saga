@@ -80,6 +80,16 @@ namespace DataBusService
             return _busControl.Publish<TMessage>(message);
         }
 
+        public Task Send<TMessage>(TMessage message) where TMessage : class
+        {
+            return _busControl.Send<TMessage>(message);
+        }
+
+        public async Task Send<TMessage>(object message) where TMessage : class
+        {
+            await _busControl.Send<TMessage>(message);
+        }
+
         public void Start()
         {
             Initialize();
