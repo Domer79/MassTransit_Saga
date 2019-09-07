@@ -58,7 +58,8 @@ namespace DataBusService
                         QueueGenerationType = QueueGenerationType.FromConfiguration,
                         QueueName = _.Queue ?? messageType.FullName.Replace('.', '_')
                     };
-                });
+                })
+                .ToArray();
 
             return new MessageHandlerBuilder(handlerInfos, configurator, host);
         }

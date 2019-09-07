@@ -21,7 +21,6 @@ namespace DatabusTestConsole
             DependencyResolver.SetDependencyResolver(new NinjectBusDependencyResolver());
             try
             {
-                EndpointConvention.Map<ITestSendMessage>(new Uri("rabbitmq://localhost/test_send_message"));
                 EndpointConvention.Map<TestMessage>(new Uri("rabbitmq://localhost/testmessage_queue"));
                 MessageCorrelation.UseCorrelationId<TestMessage>(x => x.CorrelationId);
                 bus = new DataBus("domer");
@@ -29,7 +28,7 @@ namespace DatabusTestConsole
 
                 for (int i = 0; i < MessageCount; i++)
                 {
-                    bus.Send<TestMessage>(new TestMessage(){Message = $"Hello World{i}"}).Wait();
+                    bus.Publish<TestMessage>(new TestMessage(){Message = $"Hello World{i}"}).Wait();
                 }
 
                 //Thread.Sleep(TimeSpan.FromSeconds(20));
