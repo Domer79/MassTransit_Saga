@@ -114,11 +114,13 @@ namespace DataBusService
 
         public void Dispose()
         {
+            Log.Info("Start Dispose DataBus");
             _receiveHandle.Disconnect();
             _receiveHandle.Dispose();
             _consumeHandle.Disconnect();
             _consumeHandle.Dispose();
             _busControl.Stop();
+            Log.Info("DataBus Disposed");
         }
 
         private WorkMode GetWorkMode()
