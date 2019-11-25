@@ -23,7 +23,9 @@ namespace DataBusService.Interfaces
         Task Publish<TMessage>(TMessage message) where TMessage : class;
 
         Task Publish<TMessage>(object message) where TMessage : class;
+
         Task Send<TMessage>(TMessage message) where TMessage : class;
+
         Task Send<TMessage>(object message) where TMessage : class;
     }
 }
