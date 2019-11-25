@@ -2,17 +2,16 @@
 <package >
   <metadata minClientVersion="2.5">
     <id>MassTransit.DataBusService</id>
-    <version>1.0.18-alpha</version>
+    <version>1.0.20-alpha</version>
     <title>DataBusService</title>
     <authors>Damir Garipov</authors>
     <owners>$author$</owners>
-    <licenseUrl>https://github.com/Domer79/MassTransit_Saga/blob/master/DataBusService/LICENSE</licenseUrl>
+    <license type="file">LICENSE.txt</license>
     <projectUrl>https://github.com/Domer79/MassTransit_Saga/tree/master/DataBusService</projectUrl>
-    <iconUrl>http://github.com/domer79/noicon</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Data bus service</description>
     <releaseNotes>First release the alpha version</releaseNotes>
-    <copyright>Copyright 2018</copyright>
+    <copyright>Copyright 2019</copyright>
     <tags>MassTransit, Data, Bus</tags>
     <dependencies>
       <dependency id="MassTransit" version="5.1.4"/>
@@ -26,6 +25,7 @@
     <file src="lib\net461\**" target="lib/net461" />
     <file src="lib\net471\**" target="lib/net471" />
     <file src="content\**" target="content" />
-    <file src="readme.txt" target="" />
+    <file src="readme.md" target="" />
+    <file src="LICENSE.txt" target="" />
   </files>
 </package>

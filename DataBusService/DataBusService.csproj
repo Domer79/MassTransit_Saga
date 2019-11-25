@@ -12,6 +12,7 @@
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+	<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -151,6 +152,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Build.bat" />
+    <None Include="Build.ps1" />
+    <None Include="LICENSE" />
+	<None Include="LICENSE.txt" Pack="true" Visible="false" PackagePath=""/>
+    <None Include="MassTransit.DataBusService.nuspec" />
+    <None Include="NOTICE" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
@@ -171,6 +178,15 @@
       xcopy $(TargetDir)DataBusService.dll $(ProjectDir)nuget_package\lib\net471\ /H /Y /C
       c:\windows\system32\windowspowershell\v1.0\powershell.exe -executionpolicy bypass copy -Path $(ProjectDir)MassTransit.DataBusService.nuspec -Destination $(ProjectDir)nuget_package\MassTransit.DataBusService.nuspec
       c:\windows\system32\windowspowershell\v1.0\powershell.exe -executionpolicy bypass copy -Path $(ProjectDir)readme.md -Destination $(ProjectDir)nuget_package\readme.txt
+	</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>
+      c:\windows\system32\windowspowershell\v1.0\powershell.exe -executionpolicy bypass Remove-Item -Path $(ProjectDir)nuget_package\lib\net461 -Force -Recurse
+      xcopy $(TargetDir)DataBusService.dll $(ProjectDir)nuget_package\lib\net461\ /H /Y /C
+      c:\windows\system32\windowspowershell\v1.0\powershell.exe -executionpolicy bypass copy -Path $(ProjectDir)MassTransit.DataBusService.nuspec -Destination $(ProjectDir)nuget_package\MassTransit.DataBusService.nuspec
+      c:\windows\system32\windowspowershell\v1.0\powershell.exe -executionpolicy bypass copy -Path $(ProjectDir)readme.md -Destination $(ProjectDir)nuget_package\readme.md
+      c:\windows\system32\windowspowershell\v1.0\powershell.exe -executionpolicy bypass copy -Path $(ProjectDir)LICENSE.txt -Destination $(ProjectDir)nuget_package\LICENSE.txt
 	</PostBuildEvent>
   </PropertyGroup>
   <!-- <PropertyGroup>
